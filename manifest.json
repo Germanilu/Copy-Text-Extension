@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Texto Cleaner PRO",
+  "version": "1.0.0",
+  "icons": {
+    "48": "assets/escoba-6.png"
+  },
+  "description": "Limpia, corrige y mejora texto usando IA directamente desde cualquier página web.",
+  "permissions": ["contextMenus", "storage", "scripting", "activeTab"],
+  "host_permissions": ["https://*/*", "http://*/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Texto Cleaner PRO"
+  }
+}
