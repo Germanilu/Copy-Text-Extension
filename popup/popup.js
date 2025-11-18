@@ -12,4 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.execCommand("copy");
     alert("Texto copiado!");
   };
+  
+
+  chrome.runtime.sendMessage({ action: "resetIcon" });
 });
+
+

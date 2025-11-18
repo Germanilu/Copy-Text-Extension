@@ -58,6 +58,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     const prompt = `${aiMap[menuItemId]}\n\nTexto:\n${selectionText}`;
     cleanedText = await callAI(prompt);
   }
+  chrome.action.setIcon({
+  path: {
+    48: "assets/escobanotif.png",
+  }
+});
 
   if (cleanedText) {
     // Guardamos en storage para mostrar en popup
@@ -110,3 +115,16 @@ function applyCleaning(type, text) {
     default: return text;
   }
 }
+
+// -------------------------------------
+// 6) REVERTIR ICONO AL CLICK EN LA EXTENSIÓN
+// -------------------------------------
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  if (msg.action === "resetIcon") {
+    chrome.action.setIcon({
+      path: {
+        48: "assets/escoba.png",
+      }
+    });
+  }
+});
