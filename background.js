@@ -60,7 +60,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
   chrome.action.setIcon({
   path: {
-    48: "assets/escobanotif.png",
+    48: "assets/CleanWriteNotif.png",
   }
 });
 
@@ -123,7 +123,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.action === "resetIcon") {
     chrome.action.setIcon({
       path: {
-        48: "assets/escoba.png",
+        48: "assets/CleanWriteLogo.png",
       }
     });
   }
