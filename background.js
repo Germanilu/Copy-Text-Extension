@@ -81,6 +81,46 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
         func: (text) => navigator.clipboard.writeText(text),
         args: [cleanedText]
       });
+
+
+      //Script para modificar el texto directamente en el input/textarea (gmail etc) 
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id, allFrames: true },
+        func: (text) => {
+
+          const activeEl = document.activeElement;
+
+          if (!activeEl) return;
+
+          // Si es un input o textarea
+          if (activeEl.tagName === "INPUT" || activeEl.tagName === "TEXTAREA") {
+            const start = activeEl.selectionStart;
+            const end = activeEl.selectionEnd;
+            activeEl.setRangeText(text, start, end, "end");
+            activeEl.focus();
+            return;
+          }
+
+          // Si es contenteditable
+          if (activeEl.isContentEditable) {
+            const selection = window.getSelection();
+            if (!selection.rangeCount) return;
+
+            const range = selection.getRangeAt(0);
+            range.deleteContents();
+            const textNode = document.createTextNode(text);
+            range.insertNode(textNode);
+
+            range.setStartAfter(textNode);
+            range.setEndAfter(textNode);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            return;
+          }
+        },
+        args: [cleanedText]
+      });
+
     }
   });
 });

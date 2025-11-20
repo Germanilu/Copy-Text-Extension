@@ -6,8 +6,16 @@
     "48": "assets/CleanWriteLogo.png"
   },
   "description": "Limpia, corrige y mejora texto usando IA directamente desde cualquier página web.",
-  "permissions": ["contextMenus", "storage", "scripting", "activeTab"],
-  "host_permissions": ["https://*/*", "http://*/*"],
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://*/*",
+    "http://*/*"
+  ],
   "background": {
     "service_worker": "background.js",
     "type": "module"
