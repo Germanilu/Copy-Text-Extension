@@ -47,7 +47,6 @@ const aiMap = {
 // 3) HANDLE CLICK DEL MENÚ
 // -------------------------------------
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-
   // Ejecutamos un content script para obtener la selección real con saltos de línea
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
@@ -59,8 +58,10 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     let cleanedText;
 
     if (cleanMap[menuItemId]) {
+  
       cleanedText = applyCleaning(cleanMap[menuItemId], selectionText);
     } else if (aiMap[menuItemId]) {
+  
       const prompt = `${aiMap[menuItemId]}\n\nTexto:\n${selectionText}`;
       cleanedText = await callAI(prompt);
     }
@@ -92,7 +93,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
           if (!activeEl) return;
 
-          // Si es un input o textarea
           if (activeEl.tagName === "INPUT" || activeEl.tagName === "TEXTAREA") {
             const start = activeEl.selectionStart;
             const end = activeEl.selectionEnd;
@@ -101,20 +101,20 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
             return;
           }
 
-          // Si es contenteditable
           if (activeEl.isContentEditable) {
             const selection = window.getSelection();
             if (!selection.rangeCount) return;
 
             const range = selection.getRangeAt(0);
             range.deleteContents();
-            const textNode = document.createTextNode(text);
-            range.insertNode(textNode);
 
-            range.setStartAfter(textNode);
-            range.setEndAfter(textNode);
-            selection.removeAllRanges();
-            selection.addRange(range);
+            // Convertir saltos de línea a <br>
+            const html = text.replace(/\n/g, "<br>");
+
+            range.insertNode(range.createContextualFragment(html));
+
+            // Mover cursor al final
+            selection.collapseToEnd();
             return;
           }
         },
