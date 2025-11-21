@@ -2,10 +2,12 @@
   "manifest_version": 3,
   "name": "CleanWrite",
   "version": "1.0.0",
+  "description": "Limpia y mejora textos rápidamente en tu navegador.",
   "icons": {
-    "48": "assets/CleanWriteLogo.png"
+    "16": "assets/logo16.png",
+    "48": "assets/logo48.png",
+    "128": "assets/logo128.png"
   },
-  "description": "Limpia, corrige y mejora texto usando IA directamente desde cualquier página web.",
   "permissions": [
     "contextMenus",
     "storage",
