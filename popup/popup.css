@@ -53,6 +53,7 @@ h1 {
   padding: 1rem;
   border-radius: 10px;
   box-shadow: var(--button-shadow);
+  background-color: #ffffff;
 }
 
 /* TEXTAREA */
@@ -95,9 +96,9 @@ button:active {
 /* NOTIFICATION */
 #notification {
   position: absolute;
-  top: 16px;
-  right: 1%;
-  transform: translateX(-10%);
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: #4caf50;
   color: white;
   padding: 8px 16px;

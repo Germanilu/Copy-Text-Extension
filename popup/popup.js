@@ -5,15 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const switchEl = document.getElementById("themeSwitch");
   const root = document.documentElement;
 
-  // DEBUG helper
-  const log = (...args) => {
-    try { console.log("[popup]", ...args); } catch(e) {}
-  };
-
+  
   // 1) Cargar último texto limpio
   chrome.storage.local.get("latestText", (res) => {
     textarea.value = res.latestText || "";
-    log("loaded latestText:", !!res.latestText);
   });
 
   // 2) Cargar tema y sincronizar toggle
@@ -21,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const theme = res.theme || "light";
     root.classList.toggle("dark", theme === "dark"); // aplica :root.dark variables
     if (switchEl) switchEl.checked = theme === "dark";
-    log("theme loaded:", theme);
   });
 
   // 3) Toggle listener
@@ -30,11 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const newTheme = switchEl.checked ? "dark" : "light";
       root.classList.toggle("dark", newTheme === "dark");
       chrome.storage.local.set({ theme: newTheme }, () => {
-        log("theme saved:", newTheme);
       });
     });
   } else {
-    log("themeSwitch element not found");
   }
 
   // 4) Copiar con boton y notificacion
