@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const copyBtn = document.getElementById("copyBtn");
   const notification = document.getElementById("notification");
   const switchEl = document.getElementById("themeSwitch");
+  const logo = document.getElementById("logo");
   const root = document.documentElement;
 
   
@@ -45,5 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 5) Reset icon message al background
   chrome.runtime.sendMessage({ action: "resetIcon" });
+
+  if (logo) {
+  logo.addEventListener("click", (e) => {
+    e.preventDefault(); // evita que el popup intente navegar
+    window.open("https://cleanwrite.eu/", "_blank");
+  });
+}
 
 });

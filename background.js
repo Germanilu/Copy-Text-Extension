@@ -4,22 +4,22 @@ import { API_KEY } from "./config.js"
 // -------------------------------------
 chrome.runtime.onInstalled.addListener(() => {
   // --- LIMPIEZA ---
-  chrome.contextMenus.create({ id: "clean_basic", title: "Limpiar →Basico", contexts: ["selection"] });
-  chrome.contextMenus.create({ id: "clean_spaces", title: "Limpiar → Espacios múltiples", contexts: ["selection"] });
-  chrome.contextMenus.create({ id: "clean_linebreaks", title: "Limpiar → Saltos múltiples", contexts: ["selection"] });
-  chrome.contextMenus.create({ id: "clean_emojis", title: "Limpiar → Quitar emojis", contexts: ["selection"] });
-  chrome.contextMenus.create({ id: "clean_urls", title: "Limpiar → Quitar URLs", contexts: ["selection"] });
-  chrome.contextMenus.create({ id: "clean_html", title: "Limpiar → Quitar HTML", contexts: ["selection"] });
+ chrome.contextMenus.create({ id: "clean_basic", title: "Clean → Basic", contexts: ["selection"] });
+chrome.contextMenus.create({ id: "clean_spaces", title: "Clean → Multiple spaces", contexts: ["selection"] });
+chrome.contextMenus.create({ id: "clean_linebreaks", title: "Clean → Multiple line breaks", contexts: ["selection"] });
+chrome.contextMenus.create({ id: "clean_emojis", title: "Clean → Remove emojis", contexts: ["selection"] });
+chrome.contextMenus.create({ id: "clean_urls", title: "Clean → Remove URLs", contexts: ["selection"] });
+chrome.contextMenus.create({ id: "clean_html", title: "Clean → Remove HTML", contexts: ["selection"] });
 
-  // --- TRANSFORMAR ---
-  chrome.contextMenus.create({ id: "clean_lower", title: "Transformar → minúsculas", contexts: ["selection"] });
-  chrome.contextMenus.create({ id: "clean_upper", title: "Transformar → MAYÚSCULAS", contexts: ["selection"] });
-  chrome.contextMenus.create({ id: "clean_titlecase", title: "Transformar → Title Case", contexts: ["selection"] });
+// --- TRANSFORM ---
+chrome.contextMenus.create({ id: "clean_lower", title: "Transform → lowercase", contexts: ["selection"] });
+chrome.contextMenus.create({ id: "clean_upper", title: "Transform → UPPERCASE", contexts: ["selection"] });
+chrome.contextMenus.create({ id: "clean_titlecase", title: "Transform → Title Case", contexts: ["selection"] });
 
-  // --- IA ---
-  chrome.contextMenus.create({ id: "ai_simplify", title: "IA → Resumir", contexts: ["selection"] });
-  chrome.contextMenus.create({ id: "ai_professional", title: "IA → Reescribir profesional", contexts: ["selection"] });
-  chrome.contextMenus.create({ id: "ai_correct", title: "IA → Corregir ortografía y claridad", contexts: ["selection"] });
+// --- AI ---
+chrome.contextMenus.create({ id: "ai_simplify", title: "AI → Summarize", contexts: ["selection"] });
+chrome.contextMenus.create({ id: "ai_professional", title: "AI → Rewrite professionally", contexts: ["selection"] });
+chrome.contextMenus.create({ id: "ai_correct", title: "AI → Correct spelling and clarity", contexts: ["selection"] });
 });
 
 // -------------------------------------

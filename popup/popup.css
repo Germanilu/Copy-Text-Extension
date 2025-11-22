@@ -54,6 +54,12 @@ h1 {
   border-radius: 10px;
   box-shadow: var(--button-shadow);
   background-color: #ffffff;
+  cursor: pointer;
+}
+
+.logo:active {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transform: scale(0.95);
 }
 
 /* TEXTAREA */
