@@ -38,9 +38,9 @@ const cleanMap = {
 };
 
 const aiMap = {
-  ai_professional: "Reescribe el siguiente texto con un tono profesional, claro y formal, apropiado para correos o comunicaciones corporativas. Mantén el significado original, evita frases meta o introducciones sobre el proceso.",
-  ai_simplify: "Resume el siguiente texto de manera clara y fácil de leer, produce: Un resumen breve en uno o dos párrafos y Una lista de puntos esenciales con frases cortas.No agregues información extra ni incluyas frases meta o explicaciones sobre cómo realizas la tarea",
-  ai_correct: "Corrige ortografía, gramática y puntuación. Mejora la claridad y fluidez sin alterar el sentido original. No agregues contenido ni incluyas frases meta o comentarios sobre el proceso.",
+  ai_professional: "Rewrite the following text with a professional, clear, and formal tone, suitable for emails or corporate communications. Keep the original meaning, and avoid meta phrases or introductions about the process.",
+  ai_simplify: "Summarize the following text in a clear and easy-to-read way, producing: A brief summary in one or two paragraphs and A list of key points with short phrases. Do not add extra information or include meta phrases or explanations about how you perform the task.",
+  ai_correct: "Correct spelling, grammar, and punctuation. Improve clarity and flow without changing the original meaning. Do not add content or include meta phrases or comments about the process.",
 };
 
 // -------------------------------------

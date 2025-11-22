@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     textarea.select();
     document.execCommand("copy");
 
-    notification.textContent = "Texto copiado!";
+    notification.textContent = "Text copied!";
     notification.classList.add("show");
 
     setTimeout(() => {
