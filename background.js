@@ -17,8 +17,8 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({ id: "clean_titlecase", title: "Transformar → Title Case", contexts: ["selection"] });
 
   // --- IA ---
+  chrome.contextMenus.create({ id: "ai_simplify", title: "IA → Resumir", contexts: ["selection"] });
   chrome.contextMenus.create({ id: "ai_professional", title: "IA → Reescribir profesional", contexts: ["selection"] });
-  chrome.contextMenus.create({ id: "ai_simplify", title: "IA → Simplificar", contexts: ["selection"] });
   chrome.contextMenus.create({ id: "ai_correct", title: "IA → Corregir ortografía y claridad", contexts: ["selection"] });
 });
 
@@ -38,9 +38,9 @@ const cleanMap = {
 };
 
 const aiMap = {
-  ai_professional: "Reescribe este texto con un tono profesional y claro:",
-  ai_simplify: "Simplifica este texto, hazlo más fácil sin perder el significado:",
-  ai_correct: "Corrige ortografía y mejora claridad sin cambiar el sentido:",
+  ai_professional: "Reescribe el siguiente texto con un tono profesional, claro y formal, apropiado para correos o comunicaciones corporativas. Mantén el significado original, evita frases meta o introducciones sobre el proceso.",
+  ai_simplify: "Resume el siguiente texto de manera clara y fácil de leer, produce: Un resumen breve en uno o dos párrafos y Una lista de puntos esenciales con frases cortas.No agregues información extra ni incluyas frases meta o explicaciones sobre cómo realizas la tarea",
+  ai_correct: "Corrige ortografía, gramática y puntuación. Mejora la claridad y fluidez sin alterar el sentido original. No agregues contenido ni incluyas frases meta o comentarios sobre el proceso.",
 };
 
 // -------------------------------------
