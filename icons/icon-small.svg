@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- CleanWrite · icono para 16 y 32 px: sin margen, sin líneas de texto, formas más gruesas. -->
+  <rect width="128" height="128" rx="28" fill="#111827"/>
+  <rect x="20" y="62" width="88" height="30" rx="15" fill="#BEF264"/>
+  <path d="M92 12 Q92 34 114 34 Q92 34 92 56 Q92 34 70 34 Q92 34 92 12Z" fill="#FFFFFF"/>
+</svg>

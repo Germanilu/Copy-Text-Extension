@@ -1,0 +1,14 @@
+{
+  "name": "cleanwrite",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.1",
+    "playwright": "1.49",
+    "vitest": "^3.2.7"
+  }
+}

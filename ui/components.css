@@ -1,0 +1,224 @@
+/* CleanWrite components — shared by popup, panel and options. Requires tokens.css. */
+
+.cw-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Visible keyboard focus everywhere */
+.cw-root :focus-visible {
+  outline: 2px solid var(--cw-focus);
+  outline-offset: 2px;
+}
+
+.cw-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---- Action pills (Fix · Rewrite · Summarize · Translate · Clean) ---- */
+.cw-pill {
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: var(--cw-radius-pill);
+  border: 1px solid var(--cw-line);
+  background: var(--cw-bg);
+  color: var(--cw-fg);
+  font: 600 15px var(--cw-font);
+  cursor: pointer;
+}
+.cw-pill:hover:not(:disabled) { background: var(--cw-hover); }
+.cw-pill.is-active,
+.cw-pill.is-active:hover:not(:disabled),
+.cw-pill[aria-pressed="true"],
+.cw-pill[aria-pressed="true"]:hover:not(:disabled) {
+  background: var(--cw-active-bg);
+  border-color: var(--cw-active-bg);
+  color: var(--cw-active-fg);
+}
+.cw-pill:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Saved "My actions" */
+.cw-pill--mine {
+  background: var(--cw-lime-soft);
+  border-color: var(--cw-lime-border);
+  color: var(--cw-lime-text);
+}
+.cw-pill--mine:hover:not(:disabled) { background: var(--cw-selection); }
+
+/* Smaller secondary pills (tones, case) */
+.cw-pill--sm {
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+/* ---- Buttons ---- */
+.cw-btn {
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 0 22px;
+  border-radius: var(--cw-radius-control);
+  border: 1px solid var(--cw-line);
+  background: var(--cw-bg);
+  color: var(--cw-fg);
+  font: 600 15px var(--cw-font);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.cw-btn:hover:not(:disabled) { background: var(--cw-hover); }
+.cw-btn:disabled { opacity: 0.6; cursor: default; }
+
+.cw-btn--lime {
+  border-color: var(--cw-lime);
+  background: var(--cw-lime);
+  color: var(--cw-ink);
+}
+.cw-btn--lime:hover:not(:disabled) { background: var(--cw-lime-border); }
+
+.cw-btn--ink {
+  border-color: var(--cw-active-bg);
+  background: var(--cw-active-bg);
+  color: var(--cw-active-fg);
+}
+.cw-btn--ink:hover:not(:disabled) { background: var(--cw-active-bg); opacity: 0.9; }
+
+.cw-btn--dashed { border-style: dashed; border-color: #64748B; }
+
+.cw-link {
+  all: unset;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ---- Instruction field + send ---- */
+.cw-ask {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.cw-input {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: var(--cw-radius-control);
+  border: 1px solid var(--cw-line);
+  background: var(--cw-field);
+  color: var(--cw-fg);
+  font: 400 15px var(--cw-font);
+}
+.cw-input::placeholder { color: var(--cw-muted); }
+.cw-input:focus {
+  outline: none;
+  border: 2px solid var(--cw-focus);
+  padding: 0 13px;
+}
+textarea.cw-input {
+  padding: 10px 14px;
+  line-height: 1.5;
+  resize: vertical;
+}
+textarea.cw-input:focus { padding: 9px 13px; }
+
+.cw-send {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: var(--cw-radius-control);
+  background: var(--cw-lime);
+  color: var(--cw-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.cw-send:hover:not(:disabled) { background: var(--cw-lime-border); }
+.cw-send:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ---- Result ---- */
+.cw-result-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.cw-label {
+  font: 600 13px var(--cw-font);
+  color: var(--cw-moss);
+  background: var(--cw-lime-soft);
+  border-radius: 8px;
+  padding: 4px 10px;
+}
+.cw-source { font: 400 13px var(--cw-font); color: var(--cw-muted); }
+.cw-result-text {
+  margin: 0;
+  font: 400 16px/1.55 var(--cw-font);
+  color: var(--cw-fg);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 280px;
+  overflow: auto;
+}
+
+.cw-select {
+  min-height: 36px;
+  padding: 0 10px;
+  border-radius: var(--cw-radius-control);
+  border: 1px solid var(--cw-line);
+  background: var(--cw-bg);
+  color: var(--cw-fg);
+  font: 400 14px var(--cw-font);
+}
+
+/* ---- Section title (e.g. "My actions") ---- */
+.cw-section-title { font: 600 13px var(--cw-font); color: var(--cw-muted); }
+
+/* ---- Loading ---- */
+.cw-spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2.5px solid var(--cw-line);
+  border-top-color: var(--cw-lime-border);
+  animation: cw-spin 0.8s linear infinite;
+  flex: none;
+}
+@keyframes cw-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .cw-spinner { animation-duration: 2.4s; } }
+
+/* ---- Progress ---- */
+.cw-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--cw-line-soft);
+  overflow: hidden;
+}
+.cw-progress > div {
+  height: 100%;
+  width: 0;
+  background: var(--cw-lime-border);
+  transition: width 0.2s;
+}
+
+/* ---- Error ---- */
+.cw-error {
+  padding: 10px 12px;
+  border-radius: var(--cw-radius-control);
+  background: var(--cw-error-bg);
+  color: var(--cw-error-fg);
+  font: 400 13px/1.45 var(--cw-font);
+}

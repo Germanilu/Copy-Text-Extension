@@ -1,23 +1,90 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>CleanWrite</title>
+    <link rel="stylesheet" href="../ui/tokens.css" />
+    <link rel="stylesheet" href="../ui/components.css" />
     <link rel="stylesheet" href="popup.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   </head>
 
-  <body>
-    <div id="notification"></div>
-    <label class="theme-toggle" title="Toggle theme">
-      <input type="checkbox" id="themeSwitch" />
-      <span class="slider"></span>
-    </label>
-      <img src="../assets/logo48.png" alt="CleanWriteLogo" id="logo" class="logo">
-    <h1>CleanWrite</h1>
-    <textarea id="cleanedText" placeholder="Aquí aparecerá el texto limpio..."></textarea>
-    <button id="copyBtn">Copy</button>
-    <script src="popup.js"></script>
-    <a href="https://cleanwrite.eu/privacy-policy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+  <body class="cw-root">
+    <header class="head">
+      <img src="../icons/icon-small.svg" width="28" height="28" alt="" />
+      <span class="brand">CleanWrite</span>
+    </header>
+
+    <!-- AI availability -->
+    <section id="aiCard" class="ai-card" data-state="checking" aria-live="polite">
+      <div class="ai-head">
+        <span class="dot" aria-hidden="true"></span>
+        <strong id="aiTitle">Checking AI…</strong>
+      </div>
+      <p id="aiText" class="ai-text" hidden></p>
+      <div id="aiProgress" class="cw-progress" hidden><div id="aiBar"></div></div>
+      <button id="enableAI" class="cw-btn cw-btn--ink ai-btn" hidden>Enable AI</button>
+    </section>
+
+    <div id="error" class="cw-error" role="alert" hidden></div>
+
+    <!-- State 1 · Actions -->
+    <main id="viewActions" class="view">
+      <label for="input" class="cw-sr-only">Text</label>
+      <textarea id="input" class="cw-input" rows="5"
+        placeholder="Paste text here — or select text on any page and right-click → CleanWrite."></textarea>
+
+      <div class="cw-row" id="actions" role="toolbar" aria-label="Actions">
+        <button class="cw-pill" data-action="fix">Fix</button>
+        <button class="cw-pill" data-action="rewrite" aria-expanded="false" aria-controls="tones">Rewrite</button>
+        <button class="cw-pill" data-action="summarize">Summarize</button>
+        <button class="cw-pill" data-action="translate">Translate</button>
+        <button class="cw-pill" data-action="clean">Clean</button>
+      </div>
+
+      <div class="cw-row" id="tones" role="group" aria-label="Rewrite tone" hidden>
+        <button class="cw-pill cw-pill--sm" data-tone="professional">Professional</button>
+        <button class="cw-pill cw-pill--sm" data-tone="friendly">Friendly</button>
+        <button class="cw-pill cw-pill--sm" data-tone="shorter">Shorter</button>
+        <button class="cw-pill cw-pill--sm" data-tone="simpler">Simpler</button>
+      </div>
+
+      <form id="askForm" class="cw-ask">
+        <label for="ask" class="cw-sr-only">Custom instruction</label>
+        <input id="ask" class="cw-input" type="text" placeholder="Or tell it what to do…" autocomplete="off" />
+        <button id="askBtn" class="cw-send" type="submit" aria-label="Run instruction">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="M13 6l6 6-6 6" /></svg>
+        </button>
+      </form>
+    </main>
+
+    <!-- State 2 · Loading -->
+    <section id="viewBusy" class="view busy" hidden aria-live="polite">
+      <span class="cw-spinner" aria-hidden="true"></span>
+      <span id="busyText">Working…</span>
+      <button id="cancelBtn" class="cw-btn busy-cancel">Cancel <kbd>Esc</kbd></button>
+    </section>
+
+    <!-- State 3 · Result -->
+    <section id="viewResult" class="view result" hidden>
+      <div class="cw-result-head">
+        <span id="resultLabel" class="cw-label"></span>
+        <span id="resultSource" class="cw-source"></span>
+      </div>
+      <p id="resultText" class="cw-result-text" tabindex="0"></p>
+      <div id="resultExtra" class="cw-row"></div>
+      <div class="cw-row">
+        <button id="copyBtn" class="cw-btn cw-btn--lime">Copy</button>
+        <button id="retryBtn" class="cw-btn">Try again</button>
+        <button id="backBtn" class="cw-btn">Back</button>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <span>Select text → right-click → <strong>CleanWrite</strong></span>
+      <a href="https://cleanwrite.eu/privacy-policy/" target="_blank" rel="noopener noreferrer">Privacy</a>
+    </footer>
+
+    <script type="module" src="popup.js"></script>
   </body>
 </html>

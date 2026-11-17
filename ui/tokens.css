@@ -1,0 +1,60 @@
+/* CleanWrite design tokens — source: brand/cleanwrite-design/DESIGN.md
+   Used by the popup, the in-page panel (Shadow DOM) and the options page. */
+
+:root,
+:host {
+  /* Brand palette */
+  --cw-ink: #111827;
+  --cw-lime: #BEF264;
+  --cw-lime-soft: #ECFCCB;
+  --cw-lime-border: #A3E635;
+  --cw-lime-text: #1A2E05;
+  --cw-selection: #D9F99D;
+  --cw-moss: #3F6212;
+  --cw-slate: #475569;
+  --cw-border: #CBD5E1;
+  --cw-divider: #E2E8F0;
+  --cw-paper: #F8FAFC;
+  --cw-white: #FFFFFF;
+  --cw-ink-2: #1F2937;
+  --cw-on-ink-muted: #CBD5E1;
+
+  --cw-radius-panel: 16px;
+  --cw-radius-control: 12px;
+  --cw-radius-pill: 22px;
+  --cw-shadow-panel: 0 16px 40px rgba(17, 24, 39, 0.16);
+  /* No runtime Google Fonts: Inter if installed, otherwise the system stack. */
+  --cw-font: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Semantic roles (light) */
+  --cw-bg: var(--cw-white);
+  --cw-fg: var(--cw-ink);
+  --cw-muted: var(--cw-slate);
+  --cw-line: var(--cw-border);
+  --cw-line-soft: var(--cw-divider);
+  --cw-field: var(--cw-paper);
+  --cw-hover: var(--cw-paper);
+  --cw-active-bg: var(--cw-ink);
+  --cw-active-fg: var(--cw-white);
+  --cw-focus: var(--cw-ink);
+  --cw-error-bg: #FEE2E2;
+  --cw-error-fg: #991B1B;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root,
+  :host {
+    --cw-bg: var(--cw-ink-2);
+    --cw-fg: var(--cw-white);
+    --cw-muted: var(--cw-on-ink-muted);
+    --cw-line: #374151;
+    --cw-line-soft: #374151;
+    --cw-field: var(--cw-ink);
+    --cw-hover: #374151;
+    --cw-active-bg: var(--cw-white);
+    --cw-active-fg: var(--cw-ink);
+    --cw-focus: var(--cw-white);
+    --cw-error-bg: #451A1A;
+    --cw-error-fg: #FECACA;
+  }
+}

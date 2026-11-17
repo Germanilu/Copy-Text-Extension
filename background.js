@@ -1,221 +1,105 @@
-import { API_KEY } from "./config.js"
+// CleanWrite · service worker
+// Right-click menu + keyboard shortcut. Both open the in-page panel (panel/content.js),
+// optionally running an action straight away. The AI itself runs inside the panel.
+
 // -------------------------------------
-// 1) CREAR MENÚS EN LA INSTALACIÓN
+// 1) Context menu: CleanWrite ▸ actions
 // -------------------------------------
+// With several top-level items, Chrome groups them under "CleanWrite" automatically.
+const MENUS = [
+  { id: "fix", title: "Fix" },
+  { id: "rewrite", title: "Rewrite" },
+  { id: "rewrite:professional", parentId: "rewrite", title: "Professional" },
+  { id: "rewrite:friendly", parentId: "rewrite", title: "Friendly" },
+  { id: "rewrite:shorter", parentId: "rewrite", title: "Shorter" },
+  { id: "rewrite:simpler", parentId: "rewrite", title: "Simpler" },
+  { id: "summarize", title: "Summarize" },
+  { id: "translate", title: "Translate" },
+  { id: "clean", title: "Clean" },
+  { id: "clean:default", parentId: "clean", title: "Clean up text" },
+  { id: "case:lowercase", parentId: "clean", title: "lowercase" },
+  { id: "case:uppercase", parentId: "clean", title: "UPPERCASE" },
+  { id: "case:titleCase", parentId: "clean", title: "Title Case" },
+  { id: "sep", type: "separator" },
+  { id: "open", title: "More actions…" },
+];
+
 chrome.runtime.onInstalled.addListener(() => {
-  // --- LIMPIEZA ---
- chrome.contextMenus.create({ id: "clean_basic", title: "Clean → Basic", contexts: ["selection"] });
-chrome.contextMenus.create({ id: "clean_spaces", title: "Clean → Multiple spaces", contexts: ["selection"] });
-chrome.contextMenus.create({ id: "clean_linebreaks", title: "Clean → Multiple line breaks", contexts: ["selection"] });
-chrome.contextMenus.create({ id: "clean_emojis", title: "Clean → Remove emojis", contexts: ["selection"] });
-chrome.contextMenus.create({ id: "clean_urls", title: "Clean → Remove URLs", contexts: ["selection"] });
-chrome.contextMenus.create({ id: "clean_html", title: "Clean → Remove HTML", contexts: ["selection"] });
-
-// --- TRANSFORM ---
-chrome.contextMenus.create({ id: "clean_lower", title: "Transform → lowercase", contexts: ["selection"] });
-chrome.contextMenus.create({ id: "clean_upper", title: "Transform → UPPERCASE", contexts: ["selection"] });
-chrome.contextMenus.create({ id: "clean_titlecase", title: "Transform → Title Case", contexts: ["selection"] });
-
-// --- AI ---
-chrome.contextMenus.create({ id: "ai_simplify", title: "AI → Summarize", contexts: ["selection"] });
-chrome.contextMenus.create({ id: "ai_professional", title: "AI → Rewrite professionally", contexts: ["selection"] });
-chrome.contextMenus.create({ id: "ai_correct", title: "AI → Correct spelling and clarity", contexts: ["selection"] });
-});
-
-// -------------------------------------
-// 2) MAPAS DE OPERACIONES
-// -------------------------------------
-const cleanMap = {
-  clean_spaces: "spaces",
-  clean_linebreaks: "linebreaks",
-  clean_emojis: "emojis",
-  clean_urls: "urls",
-  clean_html: "html",
-  clean_lower: "lower",
-  clean_upper: "upper",
-  clean_titlecase: "titlecase",
-  clean_basic: "basic",
-};
-
-const aiMap = {
-  ai_professional: "Rewrite the following text with a professional, clear, and formal tone, suitable for emails or corporate communications. Keep the original meaning, and avoid meta phrases or introductions about the process.",
-  ai_simplify: "Summarize the following text in a clear and easy-to-read way, producing: A brief summary in one or two paragraphs and A list of key points with short phrases. Do not add extra information or include meta phrases or explanations about how you perform the task.",
-  ai_correct: "Correct spelling, grammar, and punctuation. Improve clarity and flow without changing the original meaning. Do not add content or include meta phrases or comments about the process.",
-};
-
-// -------------------------------------
-// 3) HANDLE CLICK DEL MENÚ
-// -------------------------------------
-chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-  // Ejecutamos un content script para obtener la selección real con saltos de línea
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: () => window.getSelection().toString(),
-  }, async (results) => {
-    const selectionText = results[0].result;
-    const menuItemId = info.menuItemId;
-
-    let cleanedText;
-
-    if (cleanMap[menuItemId]) {
-  
-      cleanedText = applyCleaning(cleanMap[menuItemId], selectionText);
-    } else if (aiMap[menuItemId]) {
-  
-      const prompt = `${aiMap[menuItemId]}\n\nTexto:\n${selectionText}`;
-      cleanedText = await callAI(prompt);
-    }
-
-    chrome.action.setIcon({
-      path: {
-        48: "assets/notif.png",
-      }
-    });
-
-    if (cleanedText) {
-      // Guardamos en storage para mostrar en popup
-      chrome.storage.local.set({ latestText: cleanedText });
-
-      // Copia script en portapapeles
-      chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        func: (text) => navigator.clipboard.writeText(text),
-        args: [cleanedText]
-      });
-
-
-      //Script para modificar el texto directamente en el input/textarea (gmail etc) 
-      chrome.scripting.executeScript({
-        target: { tabId: tab.id, allFrames: true },
-        func: (text) => {
-
-          const activeEl = document.activeElement;
-
-          if (!activeEl) return;
-
-          if (activeEl.tagName === "INPUT" || activeEl.tagName === "TEXTAREA") {
-            const start = activeEl.selectionStart;
-            const end = activeEl.selectionEnd;
-            activeEl.setRangeText(text, start, end, "end");
-            activeEl.focus();
-            return;
-          }
-
-          if (activeEl.isContentEditable) {
-            const selection = window.getSelection();
-            if (!selection.rangeCount) return;
-
-            const range = selection.getRangeAt(0);
-            range.deleteContents();
-
-            // Convertir saltos de línea a <br>
-            const html = text.replace(/\n/g, "<br>");
-
-            range.insertNode(range.createContextualFragment(html));
-
-            // Mover cursor al final
-            selection.collapseToEnd();
-            return;
-          }
-        },
-        args: [cleanedText]
-      });
-
-    }
+  // onInstalled also fires on updates: clear first to avoid "duplicate id" errors.
+  chrome.contextMenus.removeAll(() => {
+    for (const m of MENUS) chrome.contextMenus.create({ ...m, contexts: ["selection"] });
   });
 });
 
-// -------------------------------------
-// 4) FUNCIÓN DE IA 
-// -------------------------------------
-async function callAI(prompt) {
-
-  const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${API_KEY}`
-    },
-    body: JSON.stringify({
-      model: "llama-3.1-8b-instant",
-      messages: [{ role: "user", content: prompt }]
-    })
-  });
-
-  const data = await response.json();
-  return data.choices[0].message.content;
-}
-
-// -------------------------------------
-// 5) FUNCIONES DE LIMPIEZA LOCAL (simple ejemplo)
-// -------------------------------------
-function applyCleaning(type, text) {
-
-  // 1) Normalizar saltos de línea
-  text = text.replace(/\r\n/g, "\n");
-
-  switch (type) {
-    case "spaces":
-      return text.replace(/[ \t]+/g, " ").trim();
-
-    case "linebreaks":
-      return text.replace(/\n{2,}/g, "\n");
-
-    case "emojis":
-      return text.replace(/[\p{Emoji_Presentation}\p{Emoji}\uFE0F]/gu, "");
-
-    case "urls":
-      return text.replace(/https?:\/\/[^\s\n]+/g, "");
-
-    case "html":
-      let bodyMatch = text.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-      text = bodyMatch ? bodyMatch[1] : text;
-      text = text.replace(/<(br|br\s*\/|p|div|li|tr|h[1-6])\b[^>]*>/gi, "\n");
-      text = text.replace(/<!--[\s\S]*?-->/g, "");
-      text = text.replace(/<(head|style|script|link|meta)[^>]*>[\s\S]*?<\/\1>/gi, "");
-      text = text.replace(/<(html|!doctype)[^>]*>/gi, "");
-      text = text.replace(/<[^>]+>/g, "");
-      text = text.replace(/\n{2,}/g, "\n");
-      text = text.replace(/^[ \t]+/gm, "").replace(/[ \t]+$/gm, "");
-      return text.trim();
-
-    case "normalize":
-      return text.replace(/[“”]/g, '"').replace(/[‘’]/g, "'");
-
-    case "titlecase":
-      return text.replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
-
-    case "lower":
-      return text.toLowerCase();
-
-    case "upper":
-      return text.toUpperCase();
-
-    case "basic":
-      return text.replace(/[ \t]+/g, " ")
-        .replace(/\n{2,}/g, "\n")
-        .replace(/\u00A0/g, " ")
-        .replace(/\u200B/g, "")
-        .replace(/–|—/g, "-")
-        .replace(/[“”]/g, '"')
-        .replace(/[‘’]/g, "'")
-        .normalize("NFKC")
-        .trim();
-
+/** Menu id -> what the panel should run. */
+export function menuToPayload(id) {
+  const [head, sub] = String(id).split(":");
+  switch (head) {
+    case "fix":
+    case "summarize":
+    case "translate":
+      return { action: head };
+    case "rewrite":
+      return sub ? { action: "rewrite", options: { tone: sub } } : null;
+    case "clean":
+      return sub ? { action: "clean" } : null;
+    case "case":
+      return { action: "case", options: { transform: sub } };
+    case "open":
+      return { action: null };
     default:
-      return text;
+      return null;
+  }
+}
+
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  const payload = menuToPayload(info.menuItemId);
+  if (!payload || !tab?.id) return;
+  await openPanel(tab.id, info.frameId ?? 0, { ...payload, fallbackText: info.selectionText || "" });
+});
+
+// -------------------------------------
+// 2) Keyboard shortcut (Alt+W by default)
+// -------------------------------------
+chrome.commands.onCommand.addListener(async (command, tab) => {
+  if (command !== "open-panel" || !tab?.id) return;
+  let frameId = 0;
+  try {
+    // Inject everywhere we're allowed, then pick the frame that holds the selection.
+    await chrome.scripting.executeScript({ target: { tabId: tab.id, allFrames: true }, files: ["panel/content.js"] });
+    const results = await chrome.scripting.executeScript({
+      target: { tabId: tab.id, allFrames: true },
+      func: () => window.__cleanwrite?.hasSelection() ?? false,
+    });
+    frameId = results.find((r) => r.result)?.frameId ?? 0;
+  } catch {}
+  await openPanel(tab.id, frameId, { action: null });
+});
+
+// -------------------------------------
+// 3) Open the panel in the page
+// -------------------------------------
+async function openPanel(tabId, frameId, payload) {
+  const target = { tabId, frameIds: [frameId] };
+  try {
+    await chrome.scripting.executeScript({ target, files: ["panel/content.js"] });
+    await chrome.scripting.executeScript({ target, func: (p) => window.__cleanwrite.open(p), args: [payload] });
+  } catch (err) {
+    // Pages where extensions can't run (chrome://, Chrome Web Store, PDF viewer…):
+    // keep the text for the popup and tell the user.
+    console.warn("[CleanWrite] can't open the panel on this page", err);
+    await chrome.storage.local.set({
+      latestText: payload.fallbackText || "",
+      lastError: "CleanWrite can't open on this page. Your selected text is here — use the actions below.",
+    });
+    chrome.action.setBadgeText({ text: "!" });
+    chrome.action.setBadgeBackgroundColor({ color: "#111827" });
   }
 }
 
 // -------------------------------------
-// 6) REVERTIR ICONO AL CLICK EN LA EXTENSIÓN
+// 4) Popup opened -> clear badge
 // -------------------------------------
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.action === "resetIcon") {
-    chrome.action.setIcon({
-      path: {
-        48: "assets/logo48.png",
-      }
-    });
-  }
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg?.action === "resetIcon") chrome.action.setBadgeText({ text: "" });
 });

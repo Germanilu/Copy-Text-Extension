@@ -1,12 +1,13 @@
 {
   "manifest_version": 3,
   "name": "CleanWrite",
-  "version": "1.0.0",
-  "description": "Limpia y mejora textos rápidamente en tu navegador.",
+  "version": "2.0.0",
+  "description": "Fix, rewrite, summarize, translate and clean selected text with Chrome's built-in AI. Free, private, on your device.",
   "icons": {
-    "16": "assets/logo16.png",
-    "48": "assets/logo48.png",
-    "128": "assets/logo128.png"
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   },
   "permissions": [
     "contextMenus",
@@ -14,17 +15,38 @@
     "scripting",
     "activeTab"
   ],
-  "host_permissions": [
-    "https://*/*",
-    "http://*/*"
-  ],
   "background": {
     "service_worker": "background.js",
     "type": "module"
   },
   "action": {
     "default_popup": "popup/popup.html",
-    "default_title": "CleanWrite"
+    "default_title": "CleanWrite",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
   },
+  "commands": {
+    "open-panel": {
+      "suggested_key": {
+        "default": "Alt+W",
+        "mac": "Alt+W"
+      },
+      "description": "Open CleanWrite on the selected text"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "panel/panel.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
   "homepage_url": "https://cleanwrite.eu/"
 }

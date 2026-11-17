@@ -1,0 +1,53 @@
+/* In-page panel (inside the iframe). The rounded frame + shadow is drawn by the
+   Shadow DOM host in panel/content.js; this page only lays out the content. */
+
+html,
+body {
+  margin: 0;
+  background: var(--cw-bg);
+  color: var(--cw-fg);
+  font: 400 14px/1.45 var(--cw-font);
+}
+
+body {
+  box-sizing: border-box;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+[hidden] { display: none !important; }
+
+.view { display: flex; flex-direction: column; gap: 14px; }
+
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-size: 13px;
+  color: var(--cw-muted);
+}
+.notice .cw-progress { flex-basis: 100%; }
+
+.busy {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.busy-cancel { margin-left: auto; min-height: 36px; padding: 0 12px; font-size: 13px; }
+kbd {
+  font: 600 11px var(--cw-font);
+  color: var(--cw-muted);
+  border: 1px solid var(--cw-line);
+  border-radius: 4px;
+  padding: 1px 4px;
+}
+
+.empty p { margin: 0; }
+
+/* The five main actions on one row (same as the popup). */
+#actions { flex-wrap: nowrap; gap: 6px; }
+#actions .cw-pill { flex: 1 1 auto; min-width: 0; padding: 0 8px; }

@@ -1,1 +1,7 @@
-config.js  
+config.js
+*.zip
+dist/
+node_modules/
+coverage/
+store/
+test-results/
